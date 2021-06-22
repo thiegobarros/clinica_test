@@ -1,6 +1,6 @@
-package com.thiego.clinica.dtos;
+package com.thiego.clinica.presents;
 
-public class EspecialidadeDto {
+public class EspecialidadePresent {
 	private Long id;
 	
 	private String nome;
