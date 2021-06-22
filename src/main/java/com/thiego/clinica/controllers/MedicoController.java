@@ -52,15 +52,15 @@ public class MedicoController {
 	}
 	
 	@GetMapping("/medico/{id}")
-	public ResponseEntity<Medico> getMedico(@PathVariable Long id) {
+	public ResponseEntity<MedicoPresent> getMedico(@PathVariable Long id) {
 		Medico medico = medicoRepository.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException("Médico não existe com id :" + id));
-		return ResponseEntity.ok(medico);
+		return ResponseEntity.ok(medicoConverter.toModel(medico));
 	}
 	
 	@PutMapping("/medico/{id}")
-	public ResponseEntity<Medico> updateMedico(@PathVariable Long id, @RequestBody MedicoDto medicoDto) {
-		return update.updateMedico(id, medicoDto);
+	public ResponseEntity<MedicoPresent> updateMedico(@PathVariable Long id, @RequestBody MedicoDto medicoDto) {
+		return ResponseEntity.ok(medicoConverter.toModel(update.updateMedico(id, medicoDto)));
 	}
 	
 	@DeleteMapping("/medico/{id}")
@@ -71,5 +71,10 @@ public class MedicoController {
 		Map<String, Boolean> response = new HashMap<>();
 		response.put("deleted", Boolean.TRUE);
 		return ResponseEntity.ok(response);
+	}
+	
+	@GetMapping("/medicos/{name}")
+	public List<MedicoPresent> listMedicoByEspecialidadeNome(@PathVariable String name) {
+		return medicoConverter.toCollection(medicoRepository.findAllWithEspecialidadeName(name));
 	}
 }

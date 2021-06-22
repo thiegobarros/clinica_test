@@ -53,15 +53,15 @@ public class EspecialidadeController {
 	}
 	
 	@GetMapping("/especialidade/{id}")
-	public ResponseEntity<Especialidade> getEspecialidade(@PathVariable Long id) {
+	public ResponseEntity<EspecialidadePresent> getEspecialidade(@PathVariable Long id) {
 		Especialidade especialidade = especialidadeRepository.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException("Especialidade não existe com id :" + id));
-		return ResponseEntity.ok(especialidade);
+		return ResponseEntity.ok(especialidadeConverter.toModel(especialidade));
 	}
 	
 	@PutMapping("/especialidade/{id}")
-	public ResponseEntity<Especialidade> updateEspecialidade(@PathVariable Long id, @RequestBody EspecialidadeDto especialidadeDto) {
-		return update.updateEspecialidade(id, especialidadeDto);
+	public ResponseEntity<EspecialidadePresent> updateEspecialidade(@PathVariable Long id, @RequestBody EspecialidadeDto especialidadeDto) {
+		return ResponseEntity.ok(especialidadeConverter.toModel(update.updateEspecialidade(id, especialidadeDto)));
 	}
 	
 	@DeleteMapping("/especialidade/{id}")
